@@ -1,88 +1,120 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { addCardToDeck } from '../slices/decksSlice';
-import { useIsFocused } from '@react-navigation/native';
+// AddFlashCardScreen.js
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import { addCardToDeck } from "../slices/decksSlice";
+import { useIsFocused } from "@react-navigation/native";
 
 const AddFlashCardScreen = ({ route, navigation }) => {
   const { deckId } = route.params;
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
-      setQuestion('');
-      setAnswer('');
+      setQuestion("");
+      setAnswer("");
     }
   }, [isFocused]);
 
   const handleSubmit = async () => {
-    if (!question || !answer) {
-      alert('Please fill out both the question and answer fields.');
+    if (!question.trim() || !answer.trim()) {
+      alert("Please fill out both the question and answer fields.");
       return;
     }
-
     const card = { question, answer };
     dispatch(addCardToDeck({ deckId, card }));
     navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Add a Flashcard</Text>
-      <TextInput
-        value={question}
-        onChangeText={setQuestion}
-        placeholder="Question"
-        style={styles.input}
-      />
-      <TextInput
-        value={answer}
-        onChangeText={setAnswer}
-        placeholder="Answer"
-        style={styles.input}
-      />
-      <Pressable style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </Pressable>
-    </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={styles.card}>
+        <Text style={styles.title}>Add a Flashcard</Text>
+        <TextInput
+          value={question}
+          onChangeText={setQuestion}
+          placeholder="Question"
+          style={styles.input}
+          placeholderTextColor="#888"
+          accessibilityLabel="Question Input"
+        />
+        <TextInput
+          value={answer}
+          onChangeText={setAnswer}
+          placeholder="Answer"
+          style={styles.input}
+          placeholderTextColor="#888"
+          accessibilityLabel="Answer Input"
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSubmit}
+          accessibilityLabel="Submit Flashcard"
+        >
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: "#F2F4F7",
+    justifyContent: "center",
+    padding: 20,
+  },
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    padding: 30,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
+    color: "#333333",
     marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "600",
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
-    alignSelf: 'stretch',
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
+    borderColor: "#CCCCCC",
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    marginBottom: 20,
+    color: "#333333",
   },
   button: {
-    backgroundColor: 'tomato',
-    padding: 10,
-    borderRadius: 5,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
+    backgroundColor: "#4ECDC4",
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
   },
   buttonText: {
-    color: '#fff',
+    color: "#FFFFFF",
     fontSize: 18,
+    fontWeight: "600",
   },
 });
 

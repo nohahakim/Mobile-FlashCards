@@ -1,12 +1,12 @@
-// slices/notificationsSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+// notificationsSlice.js
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   lastQuizCompletedDate: null,
 };
 
 const notificationsSlice = createSlice({
-  name: 'notifications',
+  name: "notifications",
   initialState,
   reducers: {
     setLastQuizCompletedDate: (state, action) => {

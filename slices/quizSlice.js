@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+// quizSlice.js
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentDeckId: null,
@@ -7,7 +8,7 @@ const initialState = {
 };
 
 export const quizSlice = createSlice({
-  name: 'quiz',
+  name: "quiz",
   initialState,
   reducers: {
     startQuiz: (state, action) => {
@@ -28,6 +29,5 @@ export const quizSlice = createSlice({
   },
 });
 
-// Actions and reducer export
 export const { startQuiz, answerQuestion, resetQuiz } = quizSlice.actions;
 export default quizSlice.reducer;
